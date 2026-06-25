@@ -118,5 +118,22 @@
     "version": "1.0.0",
     "input_type": "response",
     "code": "def apply_guardrail(inputs, request_data, input_type):\n    \"\"\"Clean and format response text\"\"\"\n    texts = inputs.get('texts', [])\n    modified_texts = []\n    \n    for text in texts:\n        # Remove markdown code blocks if requested\n        metadata = request_data.get('metadata', {})\n        if metadata.get('strip_markdown', False):\n            text = regex_replace(r'```[a-z]*\\n?', '', text)\n            text = regex_replace(r'```', '', text)\n            text = regex_replace(r'\\*\\*([^*]+)\\*\\*', r'\\1', text)  # Bold\n            text = regex_replace(r'\\*([^*]+)\\*', r'\\1', text)  # Italic\n        \n        # Normalize whitespace\n        text = regex_replace(r'\\n{3,}', '\\n\\n', text)\n        text = regex_replace(r' {2,}', ' ', text)\n        \n        modified_texts.append(text.strip())\n    \n    return modify(texts=modified_texts)"
+  },
+  "assistant_identity_protection": {
+  "name": "Assistant Identity Protection",
+  "description": "Prevents disclosure of assistant identity, creator, provider, ownership, and underlying model details.",
+  "category": "security",
+  "tags": [
+    "identity",
+    "assistant",
+    "persona",
+    "model",
+    "provider",
+    "privacy"
+  ],
+  "author": "Hari Sudhan (@HariSudhan005)",
+  "version": "0.1.0",
+  "input_type": "request",
+  "code": "def apply_guardrail(inputs, request_data, input_type): ..."
   }
 }
